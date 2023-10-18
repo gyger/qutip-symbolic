@@ -1,6 +1,5 @@
 
-from .compat.commutator import Commutator
-
+from sympy.physics.quantum.commutator import Commutator
 
 def recursive_commutator(a, b, n=1):
     """
