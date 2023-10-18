@@ -1,4 +1,4 @@
-from sympy import I, diff, exp
+from sympy import I, diff, exp, Add, Mul
 from .bch import bch_expansion
 from .operator_utilities import extract_operators, subs_single
 

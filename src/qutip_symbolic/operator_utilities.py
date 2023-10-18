@@ -1,5 +1,5 @@
 from sympy import Add, Mul, Pow, Symbol
-from .compat.operator import Operator
+from sympy.physics.quantum.operator import Operator
 from sympy.physics.quantum.operatorordering import normal_ordered_form
 
 debug = False  # TODO: replace with logging
