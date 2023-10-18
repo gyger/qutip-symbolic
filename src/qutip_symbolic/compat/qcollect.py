@@ -20,10 +20,8 @@ from sympy.polys import gcd
 from sympy.simplify.sqrtdenest import sqrtdenest
 from sympy.utilities.iterables import iterable, sift
 
-def acollect(expr, syms, func=None, evaluate=None, exact=False, distribute_order_term=True):
-    return collect(expr, syms, func=None, evaluate=None, exact=False, distribute_order_term=True)
 
-def collect(expr, syms, func=None, evaluate=None, exact=False, distribute_order_term=True):
+def qcollect(expr, syms, func=None, evaluate=None, exact=False, distribute_order_term=True):
     """
     Collect additive terms of an expression.
 
@@ -209,7 +207,7 @@ def collect(expr, syms, func=None, evaluate=None, exact=False, distribute_order_
         simple = all(i.is_Pow and i.base in syms for i in _syms)
         syms = syms + list(ordered(_syms))
         if not simple:
-            return collect(expr, syms,
+            return qcollect(expr, syms,
             func=func, evaluate=evaluate, exact=False,
             distribute_order_term=distribute_order_term)
 
@@ -389,14 +387,14 @@ def collect(expr, syms, func=None, evaluate=None, exact=False, distribute_order_
         if expr.is_Add:
             o = expr.getO() or 0
             expr = expr.func(*[
-                    collect(a, syms, func, True, exact, distribute_order_term)
+                    qcollect(a, syms, func, True, exact, distribute_order_term)
                     for a in expr.args if a != o]) + o
         elif expr.is_Mul:
             return expr.func(*[
-                collect(term, syms, func, True, exact, distribute_order_term)
+                qcollect(term, syms, func, True, exact, distribute_order_term)
                 for term in expr.args])
         elif expr.is_Pow:
-            b = collect(
+            b = qcollect(
                 expr.base, syms, func, True, exact, distribute_order_term)
             return Pow(b, expr.exp)
 

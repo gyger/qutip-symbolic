@@ -6,7 +6,7 @@ from sympy.physics.quantum.operatorordering import normal_ordered_form
 from .commutators import recursive_commutator
 from .operator_utilities import extract_operator_products, split_coeff_operator
 from .qsimplify import qsimplify
-from .compat.support import acollect
+from .compat.qcollect import qcollect
 
 debug = False  # TODO: replace with logging
 
@@ -217,9 +217,9 @@ def bch_expansion(A, B, N=6, collect_operators=None, independent=False,
 
     # Use broken collect version. https://github.com/sympy/sympy/issues/16713
     if collect_operators:
-        e_collected = acollect(e, collect_operators)
+        e_collected = qcollect(e, collect_operators)
     else:
-        e_collected = acollect(e, ops)
+        e_collected = qcollect(e, ops)
 
     if debug:
         print("search for series expansions: ", expansion_search)
