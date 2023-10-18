@@ -1,4 +1,5 @@
 """Pauli operators and states"""
+from sympy.core import S
 
 from sympy import I, Mul, Add, Pow, exp, Integer
 from .operator import Operator
@@ -32,7 +33,7 @@ class SigmaOpBase(Operator):
         return Operator.__new__(cls, *args, **hints)
 
     def _eval_commutator_BosonOp(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
 
 class SigmaX(SigmaOpBase):
@@ -64,24 +65,24 @@ class SigmaX(SigmaOpBase):
 
     def _eval_commutator_SigmaY(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return 2 * I * SigmaZ(self.name)
 
     def _eval_commutator_SigmaZ(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return - 2 * I * SigmaY(self.name)
 
     def _eval_commutator_BosonOp(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_anticommutator_SigmaY(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_anticommutator_SigmaZ(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_adjoint(self):
         return self
@@ -109,7 +110,7 @@ class SigmaX(SigmaOpBase):
                 return Mul(other, self)
 
         if isinstance(other, SigmaX) and self.name == other.name:
-            return Integer(1)
+            return S.One
 
         if isinstance(other, SigmaY) and self.name == other.name:
             return I * SigmaZ(self.name)
@@ -118,10 +119,10 @@ class SigmaX(SigmaOpBase):
             return - I * SigmaY(self.name)
 
         if isinstance(other, SigmaMinus) and self.name == other.name:
-            return (Integer(1)/2 + SigmaZ(self.name)/2)
+            return (S.One/2 + SigmaZ(self.name)/2)
 
         if isinstance(other, SigmaPlus) and self.name == other.name:
-            return (Integer(1)/2 - SigmaZ(self.name)/2)
+            return (S.One/2 - SigmaZ(self.name)/2)
 
         if isinstance(other, Mul):
             args1 = tuple(arg for arg in other.args if arg.is_commutative)
@@ -171,21 +172,21 @@ class SigmaY(SigmaOpBase):
 
     def _eval_commutator_SigmaZ(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return 2 * I * SigmaX(self.name)
 
     def _eval_commutator_SigmaX(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return - 2 * I * SigmaZ(self.name)
 
     def _eval_anticommutator_SigmaX(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_anticommutator_SigmaZ(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_adjoint(self):
         return self
@@ -216,16 +217,16 @@ class SigmaY(SigmaOpBase):
             return - I * SigmaZ(self.name)
 
         if isinstance(other, SigmaY) and self.name == other.name:
-            return Integer(1)
+            return S.One
 
         if isinstance(other, SigmaZ) and self.name == other.name:
             return I * SigmaX(self.name)
 
         if isinstance(other, SigmaMinus) and self.name == other.name:
-            return -I * (Integer(1) + SigmaZ(self.name))/2
+            return -I * (S.One + SigmaZ(self.name))/2
 
         if isinstance(other, SigmaPlus) and self.name == other.name:
-            return I * (Integer(1) - SigmaZ(self.name))/2
+            return I * (S.One - SigmaZ(self.name))/2
 
         if isinstance(other, Mul):
             args1 = tuple(arg for arg in other.args if arg.is_commutative)
@@ -275,21 +276,21 @@ class SigmaZ(SigmaOpBase):
 
     def _eval_commutator_SigmaX(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return 2 * I * SigmaY(self.name)
 
     def _eval_commutator_SigmaY(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return - 2 * I * SigmaX(self.name)
 
     def _eval_anticommutator_SigmaX(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_anticommutator_SigmaY(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_adjoint(self):
         return self
@@ -323,7 +324,7 @@ class SigmaZ(SigmaOpBase):
             return - I * SigmaX(self.name)
 
         if isinstance(other, SigmaZ) and self.name == other.name:
-            return Integer(1)
+            return S.One
 
         if isinstance(other, SigmaMinus) and self.name == other.name:
             return - SigmaMinus(self.name)
@@ -381,13 +382,13 @@ class SigmaMinus(SigmaOpBase):
 
     def _eval_commutator_SigmaX(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return -SigmaZ(self.name)
 
     def _eval_commutator_SigmaY(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return I * SigmaZ(self.name)
 
@@ -398,23 +399,23 @@ class SigmaMinus(SigmaOpBase):
         return SigmaZ(self.name)
 
     def _eval_anticommutator_SigmaZ(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_anticommutator_SigmaX(self, other, **hints):
-        return Integer(1)
+        return S.One
 
     def _eval_anticommutator_SigmaY(self, other, **hints):
-        return - I * Integer(1)
+        return - I * S.One
 
     def _eval_anticommutator_SigmaPlus(self, other, **hints):
-        return Integer(1)
+        return S.One
 
     def _eval_adjoint(self):
         return SigmaPlus(self.name)
 
     def _eval_power(self, e):
         if e.is_Integer and e.is_positive:
-            return Integer(0)
+            return S.Zero
 
     def __mul__(self, other):
 
@@ -426,20 +427,20 @@ class SigmaMinus(SigmaOpBase):
                 return Mul(other, self)
 
         if isinstance(other, SigmaX) and self.name == other.name:
-            return (Integer(1) - SigmaZ(self.name))/2
+            return (S.One - SigmaZ(self.name))/2
 
         if isinstance(other, SigmaY) and self.name == other.name:
-            return - I * (Integer(1) - SigmaZ(self.name))/2
+            return - I * (S.One - SigmaZ(self.name))/2
 
         if isinstance(other, SigmaZ) and self.name == other.name:
             # (SigmaX(self.name) - I * SigmaY(self.name))/2
             return SigmaMinus(self.name)
 
         if isinstance(other, SigmaMinus) and self.name == other.name:
-            return Integer(0)
+            return S.Zero
 
         if isinstance(other, SigmaPlus) and self.name == other.name:
-            return Integer(1)/2 - SigmaZ(self.name)/2
+            return S.One/2 - SigmaZ(self.name)/2
 
         if isinstance(other, Mul):
             args1 = tuple(arg for arg in other.args if arg.is_commutative)
@@ -500,19 +501,19 @@ class SigmaPlus(SigmaOpBase):
 
     def _eval_commutator_SigmaX(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return SigmaZ(self.name)
 
     def _eval_commutator_SigmaY(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return I * SigmaZ(self.name)
 
     def _eval_commutator_SigmaZ(self, other, **hints):
         if self.name != other.name:
-            return Integer(0)
+            return S.Zero
         else:
             return -2 * self
 
@@ -520,16 +521,16 @@ class SigmaPlus(SigmaOpBase):
         return SigmaZ(self.name)
 
     def _eval_anticommutator_SigmaZ(self, other, **hints):
-        return Integer(0)
+        return S.Zero
 
     def _eval_anticommutator_SigmaX(self, other, **hints):
-        return Integer(1)
+        return S.One
 
     def _eval_anticommutator_SigmaY(self, other, **hints):
-        return I * Integer(1)
+        return I * S.One
 
     def _eval_anticommutator_SigmaMinus(self, other, **hints):
-        return Integer(1)
+        return S.One
 
     def _eval_adjoint(self):
         return SigmaMinus(self.name)
@@ -539,11 +540,11 @@ class SigmaPlus(SigmaOpBase):
 
     def _eval_power(self, e):
         if e.is_Integer and e.is_positive:
-            return Integer(0)
+            return S.Zero
 
     def __mul__(self, other):
 
-        if other == Integer(1):
+        if other == S.One:
             return self
 
         if isinstance(other, SigmaOpBase) and self.name != other.name:
@@ -554,20 +555,20 @@ class SigmaPlus(SigmaOpBase):
                 return Mul(other, self)
 
         if isinstance(other, SigmaX) and self.name == other.name:
-            return (Integer(1) + SigmaZ(self.name))/2
+            return (S.One + SigmaZ(self.name))/2
 
         if isinstance(other, SigmaY) and self.name == other.name:
-            return I * (Integer(1) + SigmaZ(self.name))/2
+            return I * (S.One + SigmaZ(self.name))/2
 
         if isinstance(other, SigmaZ) and self.name == other.name:
             #-(SigmaX(self.name) + I * SigmaY(self.name))/2
             return -SigmaPlus(self.name)
 
         if isinstance(other, SigmaMinus) and self.name == other.name:
-            return (Integer(1) + SigmaZ(self.name))/2
+            return (S.One + SigmaZ(self.name))/2
 
         if isinstance(other, SigmaPlus) and self.name == other.name:
-            return Integer(0)
+            return S.Zero
 
         if isinstance(other, Mul):
             args1 = tuple(arg for arg in other.args if arg.is_commutative)
@@ -644,11 +645,11 @@ class SigmaZKet(Ket):
         if self.n == 0:
             return SigmaZKet(1)
         else:
-            return Integer(0)
+            return S.Zero
 
     def _apply_operator_SigmaPlus(self, op, **options):
         if self.n == 0:
-            return Integer(0)
+            return S.Zero
         else:
             return SigmaZKet(0)
 
@@ -703,7 +704,7 @@ def _qsimplify_pauli_product(a, b):
     elif isinstance(a, SigmaX):
 
         if isinstance(b, SigmaX):
-            return Integer(1)
+            return S.One
 
         if isinstance(b, SigmaY):
             return I * SigmaZ(a.name)
@@ -712,10 +713,10 @@ def _qsimplify_pauli_product(a, b):
             return - I * SigmaY(a.name)
 
         if isinstance(b, SigmaMinus):
-            return (Integer(1)/2 + SigmaZ(a.name)/2)
+            return (S.One/2 + SigmaZ(a.name)/2)
 
         if isinstance(b, SigmaPlus):
-            return (Integer(1)/2 - SigmaZ(a.name)/2)
+            return (S.One/2 - SigmaZ(a.name)/2)
 
     elif isinstance(a, SigmaY):
 
@@ -723,16 +724,16 @@ def _qsimplify_pauli_product(a, b):
             return - I * SigmaZ(a.name)
 
         if isinstance(b, SigmaY):
-            return Integer(1)
+            return S.One
 
         if isinstance(b, SigmaZ):
             return I * SigmaX(a.name)
 
         if isinstance(b, SigmaMinus):
-            return -I * (Integer(1) + SigmaZ(a.name))/2
+            return -I * (S.One + SigmaZ(a.name))/2
 
         if isinstance(b, SigmaPlus):
-            return I * (Integer(1) - SigmaZ(a.name))/2
+            return I * (S.One - SigmaZ(a.name))/2
 
     elif isinstance(a, SigmaZ):
 
@@ -743,7 +744,7 @@ def _qsimplify_pauli_product(a, b):
             return - I * SigmaX(a.name)
 
         if isinstance(b, SigmaZ):
-            return Integer(1)
+            return S.One
 
         if isinstance(b, SigmaMinus):
             return - SigmaMinus(a.name)
@@ -754,38 +755,38 @@ def _qsimplify_pauli_product(a, b):
     elif isinstance(a, SigmaMinus):
 
         if isinstance(b, SigmaX):
-            return (Integer(1) - SigmaZ(a.name))/2
+            return (S.One - SigmaZ(a.name))/2
 
         if isinstance(b, SigmaY):
-            return - I * (Integer(1) - SigmaZ(a.name))/2
+            return - I * (S.One - SigmaZ(a.name))/2
 
         if isinstance(b, SigmaZ):
             # (SigmaX(a.name) - I * SigmaY(a.name))/2
             return SigmaMinus(b.name)
 
         if isinstance(b, SigmaMinus):
-            return Integer(0)
+            return S.Zero
 
         if isinstance(b, SigmaPlus):
-            return Integer(1)/2 - SigmaZ(a.name)/2
+            return S.One/2 - SigmaZ(a.name)/2
 
     elif isinstance(a, SigmaPlus):
 
         if isinstance(b, SigmaX):
-            return (Integer(1) + SigmaZ(a.name))/2
+            return (S.One + SigmaZ(a.name))/2
 
         if isinstance(b, SigmaY):
-            return I * (Integer(1) + SigmaZ(a.name))/2
+            return I * (S.One + SigmaZ(a.name))/2
 
         if isinstance(b, SigmaZ):
             #-(SigmaX(a.name) + I * SigmaY(a.name))/2
             return -SigmaPlus(a.name)
 
         if isinstance(b, SigmaMinus):
-            return (Integer(1) + SigmaZ(a.name))/2
+            return (S.One + SigmaZ(a.name))/2
 
         if isinstance(b, SigmaPlus):
-            return Integer(0)
+            return S.Zero
 
     else:
         return a * b
